@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { getTool } from '../tools/registry.js';
 import { authMiddleware } from '../auth/middleware.js';
 import { ensureAccountAccess } from '../services/authz.js';
+import { startAnalysisRun } from '../services/runs.js';
 
 export const adAccountRoutes = new Hono().use('*', authMiddleware);
 
@@ -56,4 +57,12 @@ adAccountRoutes.get('/ad-accounts/:id/ad-groups/:agid/keywords', async (c) => {
   await ensureAccountAccess(user.userId, id);
   const data = await callReadTool('read_keywords', { adGroupId: agid }, id);
   return c.json(data);
+});
+
+adAccountRoutes.post('/ad-accounts/:id/run-analysis', async (c) => {
+  const user = c.get('user');
+  const id = c.req.param('id');
+  await ensureAccountAccess(user.userId, id);
+  const run = await startAnalysisRun(id, `manual:${user.userId}`);
+  return c.json({ runId: run.id, status: run.status });
 });
