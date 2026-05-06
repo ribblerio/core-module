@@ -3,6 +3,7 @@ import { sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { env } from './config/env.js';
 import { db } from './db/client.js';
+import { openapi } from './openapi.js';
 import { apiRoutes } from './routes/index.js';
 import './tools/google-ads/index.js';
 
@@ -13,6 +14,7 @@ app.get('/health/db', async (c) => {
   const result = await db.execute(sql`SELECT 1 as ok`);
   return c.json({ ok: result.rows[0]?.ok === 1 });
 });
+app.get('/openapi.json', (c) => c.json(openapi));
 
 app.route('/', apiRoutes);
 
