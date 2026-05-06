@@ -21,7 +21,7 @@ export const proposals = coreSchema.table(
     riskScore: numeric('risk_score', { precision: 3, scale: 2 }),
     status: text('status', { enum: proposalStatus }).default('proposed').notNull(),
     backendAtDecision: text('backend_at_decision', { enum: ['mock', 'sandbox', 'live'] }),
-    decidedBy: uuid('decided_by'),
+    decidedBy: text('decided_by'),
     decidedAt: timestamp('decided_at', { withTimezone: true }),
     decisionNote: text('decision_note'),
     executedAt: timestamp('executed_at', { withTimezone: true }),
