@@ -79,8 +79,14 @@ async function executeRun(
   triggeredBy: string,
 ): Promise<void> {
   try {
+    // Mock account exposes a single campaign with ID 'cmp_1' and ad groups
+    // 'ag_1', 'ag_2', 'ag_3'. We pass these explicitly because there is no
+    // list_campaigns tool yet (TODO: add when we wire the real Google Ads
+    // integration; the agent will discover them via that tool).
     const userMessage =
-      `Please analyze ad account ${adAccountId}. Start by listing the campaigns, then dig into each one. ` +
+      `Please analyze ad account ${adAccountId}. The single campaign in this account has ID "cmp_1". ` +
+      `Its ad groups are "ag_1", "ag_2", and "ag_3". ` +
+      `Start by reading the campaign overview, then read the search terms, geo performance, and keywords for each ad group. ` +
       `Look for negative keyword candidates, new keyword candidates, and geo bid push opportunities. ` +
       `Use the read_* tools to gather evidence, and the propose tools (add_negative_keyword, add_keyword, set_geo_bid_modifier) to surface opportunities to the human approver.`;
 
